@@ -19,7 +19,8 @@ public class HomeController {
 
     private final UserService userService;
 
-    @GetMapping("/api/users")
+    //@GetMapping("/api/users")
+    @RequestMapping(value="/api/users", method=RequestMethod.GET)
     public ResponseEntity<List<User>> getUsers() {
         return new ResponseEntity<>(userService.getUsers(),HttpStatus.OK);
     }
