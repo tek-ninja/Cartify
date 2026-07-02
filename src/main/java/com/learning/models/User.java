@@ -2,7 +2,6 @@ package com.learning.models;
 
 import lombok.Data;
 
-//Used lombook
 @Data
 public class User {
 
