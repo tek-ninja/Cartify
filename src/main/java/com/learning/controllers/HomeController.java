@@ -15,17 +15,19 @@ import java.util.List;
 // Hello Controller for the initial welcome message
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/users")
 public class HomeController {
 
     private final UserService userService;
 
     //@GetMapping("/api/users") is a combination of RequestMapping + GET
-    @RequestMapping(value="/api/users", method=RequestMethod.GET)
+    //@RequestMapping(value="/api/users", method=RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<List<User>> getUsers() {
         return new ResponseEntity<>(userService.getUsers(),HttpStatus.OK);
     }
 
-    @GetMapping("/api/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.notFound().build());
@@ -36,12 +38,12 @@ public class HomeController {
         return new ResponseEntity<>(user,HttpStatus.FOUND);
          */
     }
-    @PostMapping("/api/users")
+    @PostMapping
     public ResponseEntity<List<User>> createUser(@RequestBody User user) {
 
         return new ResponseEntity<>(userService.addUser(user),HttpStatus.CREATED);
     }
-    @PutMapping("/api/users")
+    @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         User updateUser = userService.updateUser(user);
         if(user == null)
