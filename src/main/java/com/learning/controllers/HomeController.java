@@ -7,9 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.learning.models.User;
 import org.springframework.http.*;
-import java.util.Optional;
-
-import java.util.ArrayList;
 import java.util.List;
 
 // Hello Controller for the initial welcome message
@@ -46,7 +43,7 @@ public class HomeController {
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         User updateUser = userService.updateUser(user);
-        if(user == null)
+        if(updateUser == null)
             return ResponseEntity.notFound().build();
 
         return new ResponseEntity<>(updateUser,HttpStatus.OK);
