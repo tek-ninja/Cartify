@@ -1,6 +1,8 @@
 package com.learning.service;
 
 import com.learning.models.User;
+import com.learning.repos.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,39 +11,30 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    List<User> userList = new ArrayList<>();
-    private Long autoID = 1L;
+    private final UserRepository userRepository;
 
     public List<User> getUsers () {
-        return userList;
+        return userRepository.findAll();
     }
 
     public Optional<User> getUserById(Long targetId) {
-        // Return null if not found
-
-        return userList.stream()
-                .filter(user -> Objects.equals(user.getId(), targetId)) // Filter by ID
-                .findFirst();          // Find the first match
-
+        return userRepository.findById(targetId).stream().findFirst();
     }
-    public List<User> addUser(User user) {
-        user.setId(autoID++);
-        userList.add(user);
-        return userList;
-    }
+    public void addUser(User user) { userRepository.save(user); }
 
     public User updateUser(User user) {
-        userList = getUsers();
-        Long targetId = user.getId();
-        User matchingUser = userList.stream()
-                .filter(user1 -> Objects.equals(user1.getId(), targetId)) // Filter by ID
-                .findFirst()                             // Find the first match
-                .orElse(null);
-        if(matchingUser != null) {
+
+        Long targetId = user.getId();;
+        User matchingUser = userRepository.findAll().stream().filter(user1 -> Objects.equals(user1.getId(), targetId))
+                .findFirst().orElse(null);
+
+        if (matchingUser != null) {
             matchingUser.setFirstName(user.getFirstName());
             matchingUser.setLastName(user.getLastName());
+            userRepository.save(matchingUser);
         }
         return matchingUser;
     }

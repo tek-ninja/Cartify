@@ -1,5 +1,6 @@
 package com.learning.controllers;
 
+import com.learning.repos.UserRepository;
 import com.learning.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,10 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-public class HomeController {
+public class CartifyController {
 
     private final UserService userService;
+
 
     //@GetMapping("/api/users") is a combination of RequestMapping + GET
     //@RequestMapping(value="/api/users", method=RequestMethod.GET)
@@ -36,9 +38,9 @@ public class HomeController {
          */
     }
     @PostMapping
-    public ResponseEntity<List<User>> createUser(@RequestBody User user) {
+    public ResponseEntity<HttpStatus> createUser(@RequestBody User user) {
+        return new ResponseEntity<>(HttpStatus.CREATED);
 
-        return new ResponseEntity<>(userService.addUser(user),HttpStatus.CREATED);
     }
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
